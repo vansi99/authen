@@ -1,15 +1,19 @@
 const express = require('express');
-const cors = require('cors');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const app = express();
-const port = process.env.PORT ||5000;
-const user = require('./routes/user');
+const server = express();
+const PORT = 3004;
+const account = require('./account');
+const dotenv = require('dotenv');
+dotenv.config();
+
+server.use(bodyParser.json());
+server.use(morgan('dev'));
+server.use('/', account);
 
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false}));
-app.use(bodyParser.json());
 
-app.use('/users',user);
-
-app.listen(port);
+server.listen(PORT, (err) => {
+    if (err) throw err;
+    console.log('server running on port: 3004');
+});
